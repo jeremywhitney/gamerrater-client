@@ -6,13 +6,8 @@ export const NavBar = () => {
   return (
     <ul className="navbar">
       <li className="navbar__item">
-        <NavLink className="navbar__link" to={"/allgames"}>
-          All Games
-        </NavLink>
-      </li>
-      <li className="navbar__item">
-        <NavLink className="navbar__link" to={"/create"}>
-          Add a Game
+        <NavLink className="navbar__link" to={"/games"}>
+          Games
         </NavLink>
       </li>
       {localStorage.getItem("gamer_token") !== null ? (

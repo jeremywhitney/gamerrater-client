@@ -1,8 +1,7 @@
-import { Outlet, Route, Routes } from "react-router-dom";
-import { Authorized } from "../views/Authorized.jsx";
-import { Login } from "../components/auth/Login.jsx";
-import { Register } from "../components/auth/Register.jsx";
+import { Routes, Route, Outlet } from "react-router-dom";
 import { NavBar } from "../components/nav/NavBar";
+import { Games } from "../components/games/Games.jsx";
+import { useState } from "react";
 
 export const ApplicationViews = () => {
   return (
@@ -16,11 +15,7 @@ export const ApplicationViews = () => {
           </>
         }
       >
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route element={<Authorized />}>
-          {/* Component Routes here */}
-        </Route>
+        <Route path="/games" element={<Games />} />
       </Route>
     </Routes>
   );
