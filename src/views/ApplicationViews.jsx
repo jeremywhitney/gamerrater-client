@@ -1,7 +1,7 @@
 import { Routes, Route, Outlet } from "react-router-dom";
 import { NavBar } from "../components/nav/NavBar";
 import { Games } from "../components/games/Games.jsx";
-import { useState } from "react";
+import { GameDetails } from "../components/games/GameDetails.jsx";
 
 export const ApplicationViews = () => {
   return (
@@ -16,6 +16,7 @@ export const ApplicationViews = () => {
         }
       >
         <Route path="/games" element={<Games />} />
+        <Route path="/games/:gameId" element={<GameDetails />} />
       </Route>
     </Routes>
   );
