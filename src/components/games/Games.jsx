@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { fetchAllGames } from "../../services/gameService";
+import { NavLink } from "react-router-dom";
 
 export const Games = () => {
   const [games, setGames] = useState([]);
@@ -19,7 +20,9 @@ export const Games = () => {
     if (games.length) {
       return games.map((game) => (
         <div key={`key-${game.id}`}>
-          <div>{game.title}</div>
+          <NavLink to={`/games/${game.id}`} className={"game-title"}>
+            {game.title}
+          </NavLink>
         </div>
       ));
     }
