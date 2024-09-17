@@ -1,0 +1,22 @@
+/* CreateGameModal */
+
+.modal {
+    position: fixed; /* Fixed positioning */
+    top: 0; /* Align to the top */
+    left: 0; /* Align to the left */
+    right: 0; /* Extend to the right */
+    bottom: 0; /* Extend to the bottom */
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex; /* Use flexbox to center the modal */
+    justify-content: center; /* Center horizontally */
+    align-items: center; /* Center vertically */
+    z-index: 1000; /* Ensure it appears above other content */
+  }
+  
+  .modal-content {
+    background-color: white; /* Background color for the modal content */
+    padding: 20px; /* Add some padding */
+    border-radius: 5px; /* Rounded corners */
+    width: 400px; /* Set a width */
+  }
+  

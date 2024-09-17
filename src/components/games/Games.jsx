@@ -1,9 +1,11 @@
 import { useEffect, useState } from "react";
 import { fetchAllGames } from "../../services/gameService";
 import { NavLink } from "react-router-dom";
+import { CreateGameModal } from "./CreateGameModal";
 
 export const Games = () => {
   const [games, setGames] = useState([]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   useEffect(() => {
     const getGames = async () => {
@@ -29,10 +31,23 @@ export const Games = () => {
     return <p>No games available</p>;
   };
 
+  const handleCreateGame = async () => {
+    // Refresh the list of games after a new game is created
+    const gamesArray = await fetchAllGames();
+    setGames(gamesArray);
+  };
+
   return (
     <>
       <h1>Games</h1>
-      {displayGames()}
+      <button onClick={() => setIsModalOpen(true)}>Register New Game</button>
+      {isModalOpen && (
+        <CreateGameModal
+          onClose={() => setIsModalOpen(false)}
+          onGameCreated={handleCreateGame}
+        />
+      )}
+      <div>{displayGames()}</div>
     </>
   );
 };
