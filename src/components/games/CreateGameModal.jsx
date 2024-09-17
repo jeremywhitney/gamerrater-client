@@ -25,7 +25,6 @@ export const CreateGameModal = ({ onClose, onGameCreated }) => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Prepare the new game data
     const newGame = {
       title,
       description: "",
@@ -34,18 +33,15 @@ export const CreateGameModal = ({ onClose, onGameCreated }) => {
       number_of_players: numPlayers,
       estimated_time_to_play: playTime,
       age_recommendation: ageRec,
-      category_id: selectedCategory, // This assumes the backend accepts category by ID
+      categories: selectedCategory,
     };
 
-    // Call the service to create a new game
     await createGame(newGame);
 
-    // Notify parent component of the new game creation (if necessary)
     if (onGameCreated) {
       onGameCreated();
     }
 
-    // Close the modal
     onClose();
   };
 
