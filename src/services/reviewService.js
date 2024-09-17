@@ -1,6 +1,6 @@
-export const fetchAllReviews = async () => {
+export const fetchAllReviews = async (gameId) => {
   try {
-    const response = await fetch("http://localhost:8000/reviews", {
+    const response = await fetch(`http://localhost:8000/reviews?gameId=${gameId}`, {
       headers: {
         Authorization: `Token ${JSON.parse(
           localStorage.getItem("gamer_token")
