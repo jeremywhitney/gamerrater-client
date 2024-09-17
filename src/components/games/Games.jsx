@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchAllGames } from "../../services/gameService";
 import { NavLink } from "react-router-dom";
 import { CreateGameModal } from "./CreateGameModal";
+import "./Games.css"
 
 export const Games = () => {
   const [games, setGames] = useState([]);
@@ -47,7 +48,7 @@ export const Games = () => {
           onGameCreated={handleCreateGame}
         />
       )}
-      <div>{displayGames()}</div>
+      <div className="games-list">{displayGames()}</div>
     </>
   );
 };

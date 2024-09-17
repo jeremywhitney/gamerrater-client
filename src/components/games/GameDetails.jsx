@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { fetchSingleGame } from "../../services/gameService";
 import { useParams } from "react-router-dom";
+import "./Games.css";
 
 export const GameDetails = () => {
   const [game, setGame] = useState(null);
@@ -22,23 +23,32 @@ export const GameDetails = () => {
   const displayGame = () => {
     if (game) {
       return (
-        <div>
-          <h2>{game.title}</h2>
-          <p>Designer: {game.designer}</p>
-          <p>Year Released: {game.year_released}</p>
-          <p>Number of Players: {game.number_of_players}</p>
-          <p>Estimated Time to Play: {game.estimated_time_to_play}</p>
-          <p>Age Recommendation: {game.age_recommendation}</p>
-          <p>Categories: {game.categories.map(category => category.name).join(', ')}</p>
+        <div className="game-details">
+          <h2 className="game-title">{game.title}</h2>
+          <p className="game-info">Designer: {game.designer}</p>
+          <p className="game-info">Year Released: {game.year_released}</p>
+          <p className="game-info">
+            Number of Players: {game.number_of_players}
+          </p>
+          <p className="game-info">
+            Estimated Time to Play: {game.estimated_time_to_play}
+          </p>
+          <p className="game-info">
+            Age Recommendation: {game.age_recommendation}
+          </p>
+          <p className="game-info">
+            Categories:{" "}
+            {game.categories.map((category) => category.name).join(", ")}
+          </p>
         </div>
       );
     }
-    return <p>Game not available</p>;
+    return <p className="no-game">Game not available</p>;
   };
 
   return (
     <>
-      <h1>Game Details</h1>
+      <h1 className="details-header">Game Details</h1>
       {displayGame()}
     </>
   );

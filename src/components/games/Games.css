@@ -1,22 +1,155 @@
-/* CreateGameModal */
+/* General Styles */
+h1 {
+  text-align: center;
+  margin: 20px 0;
+  font-size: 2.5rem;
+  color: #333;
+}
 
+/* Games List Styles */
+.games-list {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.game-title {
+  text-decoration: none;
+  font-size: 1.2rem;
+  color: #007bff;
+  background-color: #fff;
+  padding: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+}
+
+.game-title:hover {
+  background-color: #f0f8ff;
+}
+
+/* Button for Register New Game */
+button {
+  display: inline-block;
+  margin-bottom: 20px;
+  padding: 10px 15px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: #0056b3;
+}
+
+/* Modal Styles */
 .modal {
-    position: fixed; /* Fixed positioning */
-    top: 0; /* Align to the top */
-    left: 0; /* Align to the left */
-    right: 0; /* Extend to the right */
-    bottom: 0; /* Extend to the bottom */
-    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
-    display: flex; /* Use flexbox to center the modal */
-    justify-content: center; /* Center horizontally */
-    align-items: center; /* Center vertically */
-    z-index: 1000; /* Ensure it appears above other content */
-  }
-  
-  .modal-content {
-    background-color: white; /* Background color for the modal content */
-    padding: 20px; /* Add some padding */
-    border-radius: 5px; /* Rounded corners */
-    width: 400px; /* Set a width */
-  }
-  
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  width: 400px;
+  max-width: 100%;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  color: #333;
+}
+
+.modal-content form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.modal-content input,
+.modal-content select {
+  padding: 10px;
+  font-size: 1rem;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  width: 90%;
+}
+
+.modal-content button {
+  padding: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.modal-content button:hover {
+  background-color: #0056b3;
+}
+
+.modal-content button[type="submit"] {
+  margin-top: 10px;
+}
+
+.modal-content button[type="cancel"] {
+  background-color: #dc3545;
+}
+
+.modal-content button[type="cancel"]:hover {
+  background-color: #c82333;
+}
+
+/* Game Details Styles */
+.game-details {
+  background-color: #fff;
+  padding: 20px;
+  margin: 20px auto;
+  max-width: 800px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.game-title {
+  font-size: 2rem;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.game-info {
+  font-size: 1.1rem;
+  margin: 5px 0;
+  color: #555;
+}
+
+.details-header {
+  text-align: center;
+  font-size: 2.5rem;
+  color: #333;
+  margin-top: 20px;
+}
+
+.no-game {
+  text-align: center;
+  color: #999;
+  font-size: 1.2rem;
+  margin-top: 20px;
+}

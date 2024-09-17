@@ -49,8 +49,8 @@ export const CreateGameModal = ({ onClose, onGameCreated }) => {
     <div className="modal">
       <div className="modal-content">
         <h2>Register New Game</h2>
-        <form onSubmit={handleSubmit}>
-          <div>
+        <form onSubmit={handleSubmit} className="modal-form">
+          <div className="form-group">
             <label>Title:</label>
             <input
               type="text"
@@ -59,7 +59,7 @@ export const CreateGameModal = ({ onClose, onGameCreated }) => {
               required
             />
           </div>
-          <div>
+          <div className="form-group">
             <label>Designer:</label>
             <input
               type="text"
@@ -68,7 +68,7 @@ export const CreateGameModal = ({ onClose, onGameCreated }) => {
               required
             />
           </div>
-          <div>
+          <div className="form-group">
             <label>Year Released:</label>
             <input
               type="text"
@@ -77,7 +77,7 @@ export const CreateGameModal = ({ onClose, onGameCreated }) => {
               required
             />
           </div>
-          <div>
+          <div className="form-group">
             <label>Number of Players:</label>
             <input
               type="text"
@@ -86,7 +86,7 @@ export const CreateGameModal = ({ onClose, onGameCreated }) => {
               required
             />
           </div>
-          <div>
+          <div className="form-group">
             <label>Estimated Time to Play:</label>
             <input
               type="text"
@@ -95,7 +95,7 @@ export const CreateGameModal = ({ onClose, onGameCreated }) => {
               required
             />
           </div>
-          <div>
+          <div className="form-group">
             <label>Age Recommendation:</label>
             <input
               type="text"
@@ -104,7 +104,7 @@ export const CreateGameModal = ({ onClose, onGameCreated }) => {
               required
             />
           </div>
-          <div>
+          <div className="form-group">
             <label>Category:</label>
             <select
               value={selectedCategory}
@@ -119,9 +119,13 @@ export const CreateGameModal = ({ onClose, onGameCreated }) => {
               ))}
             </select>
           </div>
-          <button type="submit">Save</button>
+          <button type="submit" className="submit-button">
+            Save
+          </button>
         </form>
-        <button onClick={onClose}>Cancel</button>
+        <button onClick={onClose} type="cancel" className="cancel-button">
+          Cancel
+        </button>
       </div>
     </div>
   );
