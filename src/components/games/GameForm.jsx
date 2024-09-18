@@ -18,7 +18,7 @@ export const GameForm = ({
   categories,
   handleSubmit,
   formTitle,
-  submitButtonText,
+  isEdit,
 }) => {
   return (
     <form onSubmit={handleSubmit} className="modal-form">
@@ -90,7 +90,12 @@ export const GameForm = ({
         <label>Category:</label>
         <select
           value={selectedCategory}
-          onChange={(e) => setSelectedCategory(e.target.value)}
+          onChange={(e) =>
+            setSelectedCategory(
+              [...e.target.selectedOptions].map((option) => option.value)
+            )
+          }
+          multiple
           required
         >
           <option value="">Select a category</option>
@@ -102,7 +107,7 @@ export const GameForm = ({
         </select>
       </div>
       <button type="submit" className="submit-button">
-        {submitButtonText}
+        {isEdit ? "Update Game" : "Create Game"}
       </button>
     </form>
   );

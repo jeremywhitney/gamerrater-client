@@ -2,12 +2,14 @@ import { useEffect, useState } from "react";
 import { fetchSingleGame } from "../../services/gameService";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchAllReviews } from "../../services/reviewService";
+import { EditGameModal } from "./EditGameModal";
 import "../reviews/Reviews.css";
 import "./Games.css";
 
 export const GameDetails = () => {
   const [game, setGame] = useState(null);
   const [reviews, setReviews] = useState([]);
+  const [showEditModal, setShowEditModal] = useState(false);
   const { gameId } = useParams();
   const navigate = useNavigate();
 
@@ -56,6 +58,12 @@ export const GameDetails = () => {
             Categories:{" "}
             {game.categories.map((category) => category.name).join(", ")}
           </p>
+          <button
+            className="edit-game-button"
+            onClick={() => setShowEditModal(true)}
+          >
+            Edit Game
+          </button>
         </div>
       );
     }
@@ -92,6 +100,10 @@ export const GameDetails = () => {
       </button>
 
       {displayReviews()}
+
+      {showEditModal && (
+        <EditGameModal onClose={() => setShowEditModal(false)} />
+      )}
     </>
   );
 };
