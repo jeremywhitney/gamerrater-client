@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchSingleGame } from "../../services/gameService";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchAllReviews } from "../../services/reviewService";
+import "../reviews/Reviews.css"
 import "./Games.css";
 
 export const GameDetails = () => {
@@ -66,10 +67,6 @@ export const GameDetails = () => {
       .reverse()
       .map((review) => (
         <div key={review.id} className="review-container">
-          <h2 className="reviews-header">Reviews</h2>
-          <button className="review-game-button" onClick={handleReviewClick}>
-            Review Game
-          </button>
           <p>
             <strong>
               {review.player.first_name} {review.player.last_name}
@@ -86,7 +83,13 @@ export const GameDetails = () => {
 
   return (
     <>
-      {displayGame()}
+      <div className="game-details-container">{displayGame()}</div>
+      
+      <h2 className="reviews-header">Reviews</h2>
+      <button className="review-game-button" onClick={handleReviewClick}>
+        Review Game
+      </button>
+
       {displayReviews()}
     </>
   );

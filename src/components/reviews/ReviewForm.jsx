@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { createReview } from "../../services/reviewService";
+import "./Reviews.css"
 
 export const ReviewForm = () => {
   const [reviewText, setReviewText] = useState("");
