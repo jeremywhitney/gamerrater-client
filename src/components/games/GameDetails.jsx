@@ -1,13 +1,15 @@
 import { useEffect, useState } from "react";
 import { fetchSingleGame } from "../../services/gameService";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { fetchAllReviews } from "../../services/reviewService";
+import "../reviews/Reviews.css"
 import "./Games.css";
 
 export const GameDetails = () => {
   const [game, setGame] = useState(null);
   const [reviews, setReviews] = useState([]);
   const { gameId } = useParams();
+  const navigate = useNavigate();
 
   useEffect(() => {
     const getGame = async () => {
@@ -37,7 +39,7 @@ export const GameDetails = () => {
     if (game) {
       return (
         <div className="game-details">
-          <h2 className="game-title">{game.title}</h2>
+          <h1 className="game-details-title">{game.title}</h1>
           <p className="game-info">Designer: {game.designer}</p>
           <p className="game-info">Year Released: {game.year_released}</p>
           <p className="game-info">
@@ -71,15 +73,23 @@ export const GameDetails = () => {
             </strong>
           </p>
           <p>{review.review_text}</p>
-          <p>Rating: {review.rating}/10</p>
         </div>
       ));
   };
 
+  const handleReviewClick = () => {
+    navigate(`/games/${gameId}/review`);
+  };
+
   return (
     <>
-      <h1 className="details-header">Game Details</h1>
-      {displayGame()}
+      <div className="game-details-container">{displayGame()}</div>
+      
+      <h2 className="reviews-header">Reviews</h2>
+      <button className="review-game-button" onClick={handleReviewClick}>
+        Review Game
+      </button>
+
       {displayReviews()}
     </>
   );

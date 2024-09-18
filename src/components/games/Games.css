@@ -128,9 +128,11 @@ button:hover {
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.1);
 }
 
-.game-title {
-  font-size: 1.2rem;
+.game-details-title {
+  font-size: 2.5rem;
+  text-align: center;
   color: #333;
+  margin-top: 20px;
   margin-bottom: 10px;
 }
 
@@ -138,13 +140,6 @@ button:hover {
   font-size: 1.1rem;
   margin: 5px 0;
   color: #555;
-}
-
-.details-header {
-  text-align: center;
-  font-size: 2.5rem;
-  color: #333;
-  margin-top: 20px;
 }
 
 .no-game {
