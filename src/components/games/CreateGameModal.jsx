@@ -5,6 +5,7 @@ import "./Games.css";
 
 export const CreateGameModal = ({ onClose, onGameCreated }) => {
   const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("")
   const [designer, setDesigner] = useState("");
   const [yearReleased, setYearReleased] = useState("");
   const [numPlayers, setNumPlayers] = useState("");
@@ -26,9 +27,9 @@ export const CreateGameModal = ({ onClose, onGameCreated }) => {
     e.preventDefault();
 
     const newGame = {
-      title,
-      description: "",
-      designer,
+      title: title,
+      description: description,
+      designer: designer,
       year_released: yearReleased,
       number_of_players: numPlayers,
       estimated_time_to_play: playTime,
@@ -65,6 +66,15 @@ export const CreateGameModal = ({ onClose, onGameCreated }) => {
               type="text"
               value={designer}
               onChange={(e) => setDesigner(e.target.value)}
+              required
+            />
+          </div>
+          <div className="form-group">
+            <label>Description:</label>
+            <input
+              type="text"
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
               required
             />
           </div>

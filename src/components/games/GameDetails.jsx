@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { fetchSingleGame } from "../../services/gameService";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchAllReviews } from "../../services/reviewService";
-import "../reviews/Reviews.css"
+import "../reviews/Reviews.css";
 import "./Games.css";
 
 export const GameDetails = () => {
@@ -41,6 +41,7 @@ export const GameDetails = () => {
         <div className="game-details">
           <h1 className="game-details-title">{game.title}</h1>
           <p className="game-info">Designer: {game.designer}</p>
+          <p className="game-info">Description: {game.description}</p>
           <p className="game-info">Year Released: {game.year_released}</p>
           <p className="game-info">
             Number of Players: {game.number_of_players}
@@ -84,7 +85,7 @@ export const GameDetails = () => {
   return (
     <>
       <div className="game-details-container">{displayGame()}</div>
-      
+
       <h2 className="reviews-header">Reviews</h2>
       <button className="review-game-button" onClick={handleReviewClick}>
         Review Game
