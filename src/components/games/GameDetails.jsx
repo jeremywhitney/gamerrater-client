@@ -2,12 +2,15 @@ import { useEffect, useState } from "react";
 import { fetchSingleGame } from "../../services/gameService";
 import { useParams, useNavigate } from "react-router-dom";
 import { fetchAllReviews } from "../../services/reviewService";
-import "../reviews/Reviews.css"
+import { EditGameModal } from "./EditGameModal";
+import "../reviews/Reviews.css";
 import "./Games.css";
 
 export const GameDetails = () => {
   const [game, setGame] = useState(null);
   const [reviews, setReviews] = useState([]);
+  const [showEditModal, setShowEditModal] = useState(false);
+  const [refreshData, setRefreshData] = useState(false);
   const { gameId } = useParams();
   const navigate = useNavigate();
 
@@ -22,7 +25,11 @@ export const GameDetails = () => {
     };
 
     getGame();
-  }, [gameId]);
+  }, [gameId, refreshData]);
+
+  const handleGameUpdate = () => {
+    setRefreshData((prev) => !prev);
+  };
 
   useEffect(() => {
     const getReviews = async () => {
@@ -41,6 +48,7 @@ export const GameDetails = () => {
         <div className="game-details">
           <h1 className="game-details-title">{game.title}</h1>
           <p className="game-info">Designer: {game.designer}</p>
+          <p className="game-info">Description: {game.description}</p>
           <p className="game-info">Year Released: {game.year_released}</p>
           <p className="game-info">
             Number of Players: {game.number_of_players}
@@ -53,8 +61,14 @@ export const GameDetails = () => {
           </p>
           <p className="game-info">
             Categories:{" "}
-            {game.categories.map((category) => category.name).join(", ")}
+            {game.categories_detail.map((category) => category.name).join(", ")}
           </p>
+          <button
+            className="edit-game-button"
+            onClick={() => setShowEditModal(true)}
+          >
+            Edit Game
+          </button>
         </div>
       );
     }
@@ -84,13 +98,21 @@ export const GameDetails = () => {
   return (
     <>
       <div className="game-details-container">{displayGame()}</div>
-      
+
       <h2 className="reviews-header">Reviews</h2>
       <button className="review-game-button" onClick={handleReviewClick}>
         Review Game
       </button>
 
       {displayReviews()}
+
+      {showEditModal && (
+        <EditGameModal
+          gameId={gameId}
+          onUpdate={handleGameUpdate}
+          onClose={() => setShowEditModal(false)}
+        />
+      )}
     </>
   );
 };

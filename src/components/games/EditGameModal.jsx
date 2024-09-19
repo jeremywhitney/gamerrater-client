@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
-import { createGame } from "../../services/gameService";
+import { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
+import { fetchSingleGame, updateGame } from "../../services/gameService";
 import { fetchCategories } from "../../services/categoryService";
 import { GameForm } from "./GameForm";
 import "./Games.css";
 
-export const CreateGameModal = ({ onClose, onGameCreated }) => {
+export const EditGameModal = ({ onUpdate, onClose }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [designer, setDesigner] = useState("");
@@ -14,20 +15,42 @@ export const CreateGameModal = ({ onClose, onGameCreated }) => {
   const [ageRec, setAgeRec] = useState("");
   const [selectedCategory, setSelectedCategory] = useState("");
   const [categories, setCategories] = useState([]);
+  const { gameId } = useParams();
 
   useEffect(() => {
+    const getGame = async () => {
+      if (gameId) {
+        const gameData = await fetchSingleGame(gameId);
+        if (gameData) {
+          setTitle(gameData.title);
+          setDescription(gameData.description);
+          setDesigner(gameData.designer);
+          setYearReleased(gameData.year_released);
+          setNumPlayers(gameData.number_of_players);
+          setPlayTime(gameData.estimated_time_to_play);
+          setAgeRec(gameData.age_recommendation);
+          setSelectedCategory(
+            gameData.categories_detail
+              ? gameData.categories_detail.map((cat) => cat.id)
+              : []
+          );
+        }
+      }
+    };
+
     const getCategories = async () => {
       const categoriesArray = await fetchCategories();
       setCategories(categoriesArray);
     };
 
+    getGame();
     getCategories();
-  }, []);
+  }, [gameId]);
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (evt) => {
+    evt.preventDefault();
 
-    const newGame = {
+    const updatedGame = {
       title: title,
       description: description,
       designer: designer,
@@ -35,21 +58,22 @@ export const CreateGameModal = ({ onClose, onGameCreated }) => {
       number_of_players: numPlayers,
       estimated_time_to_play: playTime,
       age_recommendation: ageRec,
-      categories: [parseInt(selectedCategory)],
+      categories: selectedCategory,
     };
 
-    await createGame(newGame);
-
-    if (onGameCreated) {
-      onGameCreated();
+    try {
+      await updateGame(gameId, updatedGame);
+      onUpdate();
+      onClose();
+    } catch (error) {
+      console.error("Error updating game:", error);
     }
-
-    onClose();
   };
 
   return (
     <div className="modal">
       <div className="modal-content">
+        <h2>Edit Game</h2>
         <GameForm
           title={title}
           setTitle={setTitle}
@@ -69,8 +93,8 @@ export const CreateGameModal = ({ onClose, onGameCreated }) => {
           setSelectedCategory={setSelectedCategory}
           categories={categories}
           handleSubmit={handleSubmit}
-          formTitle="Register New Game"
-          isEdit={false}
+          formTitle="Edit Game"
+          isEdit={true}
         />
         <button onClick={onClose} type="cancel" className="cancel-button">
           Cancel

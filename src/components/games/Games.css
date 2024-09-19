@@ -20,15 +20,16 @@ h1 {
   text-decoration: none;
   font-size: 1.2rem;
   color: #007bff;
-  background-color: #fff;
+  background-color: #f9f9f9;
   padding: 10px;
   border: 1px solid #ddd;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
+  border-radius: 10px;
+  transition: background-color 0.3s ease, transform 0.3s;
 }
 
 .game-title:hover {
-  background-color: #f0f8ff;
+  background-color: #e0f7fa;
+  transform: scale(1.02);
 }
 
 /* Button for Register New Game */
@@ -65,8 +66,10 @@ button:hover {
   background-color: #fff;
   padding: 20px;
   border-radius: 10px;
-  width: 400px;
-  max-width: 100%;
+  width: 100%; /* Adjusted width for better responsiveness */
+  max-width: 500px; /* Adjusted max-width to prevent the form from being too wide */
+  max-height: 80vh; /* Ensures the modal content doesn’t exceed the viewport height */
+  overflow-y: auto; /* Allows scrolling if content overflows */
   box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.2);
 }
 
@@ -88,7 +91,7 @@ button:hover {
   font-size: 1rem;
   border: 1px solid #ddd;
   border-radius: 5px;
-  width: 90%;
+  width: 100%; /* Adjusted width to fill modal content */
 }
 
 .modal-content button {
