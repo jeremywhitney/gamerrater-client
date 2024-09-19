@@ -10,6 +10,7 @@ export const GameDetails = () => {
   const [game, setGame] = useState(null);
   const [reviews, setReviews] = useState([]);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [refreshData, setRefreshData] = useState(false);
   const { gameId } = useParams();
   const navigate = useNavigate();
 
@@ -24,7 +25,11 @@ export const GameDetails = () => {
     };
 
     getGame();
-  }, [gameId]);
+  }, [gameId, refreshData]);
+
+  const handleGameUpdate = () => {
+    setRefreshData((prev) => !prev);
+  };
 
   useEffect(() => {
     const getReviews = async () => {
@@ -56,7 +61,7 @@ export const GameDetails = () => {
           </p>
           <p className="game-info">
             Categories:{" "}
-            {game.categories.map((category) => category.name).join(", ")}
+            {game.categories_detail.map((category) => category.name).join(", ")}
           </p>
           <button
             className="edit-game-button"
@@ -102,7 +107,11 @@ export const GameDetails = () => {
       {displayReviews()}
 
       {showEditModal && (
-        <EditGameModal onClose={() => setShowEditModal(false)} />
+        <EditGameModal
+          gameId={gameId}
+          onUpdate={handleGameUpdate}
+          onClose={() => setShowEditModal(false)}
+        />
       )}
     </>
   );

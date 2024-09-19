@@ -95,7 +95,6 @@ export const GameForm = ({
               [...e.target.selectedOptions].map((option) => option.value)
             )
           }
-          multiple
           required
         >
           <option value="">Select a category</option>

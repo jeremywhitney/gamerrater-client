@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import { fetchSingleGame, updateGame } from "../../services/gameService";
 import { fetchCategories } from "../../services/categoryService";
 import { GameForm } from "./GameForm";
 import "./Games.css";
 
-export const EditGameModal = () => {
+export const EditGameModal = ({ onUpdate, onClose }) => {
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [designer, setDesigner] = useState("");
@@ -16,7 +16,6 @@ export const EditGameModal = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [categories, setCategories] = useState([]);
   const { gameId } = useParams();
-  const navigate = useNavigate();
 
   useEffect(() => {
     const getGame = async () => {
@@ -30,7 +29,11 @@ export const EditGameModal = () => {
           setNumPlayers(gameData.number_of_players);
           setPlayTime(gameData.estimated_time_to_play);
           setAgeRec(gameData.age_recommendation);
-          setSelectedCategory(gameData.categories ? gameData.categories.map((cat) => cat.id) : []);
+          setSelectedCategory(
+            gameData.categories_detail
+              ? gameData.categories_detail.map((cat) => cat.id)
+              : []
+          );
         }
       }
     };
@@ -60,7 +63,8 @@ export const EditGameModal = () => {
 
     try {
       await updateGame(gameId, updatedGame);
-      navigate(`/games/${gameId}`);
+      onUpdate();
+      onClose();
     } catch (error) {
       console.error("Error updating game:", error);
     }
@@ -92,6 +96,9 @@ export const EditGameModal = () => {
           formTitle="Edit Game"
           isEdit={true}
         />
+        <button onClick={onClose} type="cancel" className="cancel-button">
+          Cancel
+        </button>
       </div>
     </div>
   );
