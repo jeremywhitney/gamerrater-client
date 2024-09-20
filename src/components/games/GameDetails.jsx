@@ -10,6 +10,7 @@ import {
   fetchAllRatings,
   updateRating,
 } from "../../services/ratingService";
+import { createPicture } from "../../services/pictureService";
 
 export const GameDetails = () => {
   const [game, setGame] = useState(null);
@@ -18,9 +19,13 @@ export const GameDetails = () => {
   const [userRating, setUserRating] = useState([]);
   const [existingRating, setExistingRating] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
+  const [base64Image, setBase64Image] = useState(null);
+  const [showUploadForm, setShowUploadForm] = useState(false);
   const [refreshData, setRefreshData] = useState(false);
   const { gameId } = useParams();
   const userId = JSON.parse(localStorage.getItem("user_id"));
+  const baseURL = "http://localhost:8000";
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -106,6 +111,14 @@ export const GameDetails = () => {
       return (
         <div className="game-details">
           <h1 className="game-details-title">{game.title}</h1>
+          {game.image_url && (
+            <img
+              src={getFullImageURL(game.image_url)}
+              alt={game.title}
+              className="game-image"
+            />
+          )}
+
           <p className="game-info">Rating: {game.average_rating} out of 10</p>
           <div className="game-info">
             Your Rating:
@@ -175,16 +188,49 @@ export const GameDetails = () => {
     navigate(`/games/${gameId}/review`);
   };
 
+  const getBase64 = (file, callback) => {
+    const reader = new FileReader();
+    reader.addEventListener("load", () => callback(reader.result));
+    reader.readAsDataURL(file);
+  };
+
+  const createGameImageString = (event) => {
+    const file = event.target.files[0];
+    getBase64(file, (base64ImageString) => {
+      setBase64Image(base64ImageString);
+      setImageFile(file);
+    });
+  };
+
+  const handleUploadPicture = async () => {
+    if (!base64Image) {
+      alert("No image selected");
+      return;
+    }
+
+    const pictureData = {
+      game_id: game.id,
+      game_image: base64Image,
+    };
+
+    try {
+      await createPicture(pictureData);
+      alert("Picture uploaded successfully");
+    } catch (error) {
+      console.error("Error uploading picture:", error);
+      alert("Failed to upload picture");
+    }
+  };
+
+  const getFullImageURL = (relativeURL) => {
+    return relativeURL.startsWith("http")
+      ? relativeURL
+      : `${baseURL}${relativeURL}`;
+  };
+
   return (
     <>
       <div className="game-details-container">{displayGame()}</div>
-
-      <h2 className="reviews-header">Reviews</h2>
-      <button className="review-game-button" onClick={handleReviewClick}>
-        Review Game
-      </button>
-
-      {displayReviews()}
 
       {showEditModal && (
         <EditGameModal
@@ -193,6 +239,23 @@ export const GameDetails = () => {
           onClose={() => setShowEditModal(false)}
         />
       )}
+
+      <button onClick={() => setShowUploadForm((prev) => !prev)}>
+        {showUploadForm ? "Cancel Upload" : "Upload Action Picture"}
+      </button>
+
+      {showUploadForm && (
+        <div className="upload-picture">
+          <input type="file" id="game_image" onChange={createGameImageString} />
+          <button onClick={handleUploadPicture}>Upload</button>
+        </div>
+      )}
+
+      <h2 className="reviews-header">Reviews</h2>
+      <button className="review-game-button" onClick={handleReviewClick}>
+        Review Game
+      </button>
+      {displayReviews()}
     </>
   );
 };
