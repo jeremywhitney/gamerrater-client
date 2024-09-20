@@ -5,13 +5,22 @@ import { fetchAllReviews } from "../../services/reviewService";
 import { EditGameModal } from "./EditGameModal";
 import "../reviews/Reviews.css";
 import "./Games.css";
+import {
+  createRating,
+  fetchAllRatings,
+  updateRating,
+} from "../../services/ratingService";
 
 export const GameDetails = () => {
   const [game, setGame] = useState(null);
   const [reviews, setReviews] = useState([]);
+  const [rating, setRatings] = useState([]);
+  const [userRating, setUserRating] = useState([]);
+  const [existingRating, setExistingRating] = useState(null);
   const [showEditModal, setShowEditModal] = useState(false);
   const [refreshData, setRefreshData] = useState(false);
   const { gameId } = useParams();
+  const userId = JSON.parse(localStorage.getItem("user_id"));
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -42,11 +51,82 @@ export const GameDetails = () => {
     getReviews();
   }, [gameId]);
 
+  useEffect(() => {
+    const getRatings = async () => {
+      const allRatings = await fetchAllRatings();
+
+      const gameRatings = allRatings.filter(
+        (rating) => rating.game.toString() === gameId.toString()
+      );
+      setRatings(gameRatings);
+
+      // Check if the user has already rated this game
+      const userRating = gameRatings.find((rating) => rating.player === userId);
+      setExistingRating(userRating || null);
+      setUserRating(userRating ? userRating.rating : null);
+    };
+
+    if (gameId) {
+      getRatings();
+    }
+  }, [gameId]);
+
+  const handleRatingChange = (event) => {
+    setUserRating(event.target.value);
+  };
+
+  const handleSubmitRating = async () => {
+    const ratingData = {
+      game: game.id,
+      rating: userRating,
+    };
+
+    try {
+      let updatedRating;
+
+      if (existingRating) {
+        // Update the existing rating
+        updatedRating = await updateRating(existingRating.id, ratingData);
+      } else {
+        // Create a new rating
+        updatedRating = await createRating(ratingData);
+      }
+
+      // Update the state after successfully submitting
+      setExistingRating(updatedRating); // Update the existing rating state
+      setUserRating(updatedRating.rating); // Update the user rating state to reflect the new one
+      setRefreshData((prev) => !prev); // Trigger a re-fetch of data to reflect any changes
+    } catch (error) {
+      console.error("Error submitting rating:", error);
+    }
+  };
+
   const displayGame = () => {
     if (game) {
       return (
         <div className="game-details">
           <h1 className="game-details-title">{game.title}</h1>
+          <p className="game-info">Rating: {game.average_rating} out of 10</p>
+          <div className="game-info">
+            Your Rating:
+            <div className="rating-group">
+              {[...Array(10)].map((_, i) => (
+                <label key={i + 1}>
+                  <input
+                    type="radio"
+                    value={i + 1}
+                    checked={
+                      userRating == i + 1 ||
+                      (existingRating && existingRating.rating == i + 1)
+                    }
+                    onChange={handleRatingChange}
+                  />
+                  {i + 1}
+                </label>
+              ))}
+            </div>
+            <button onClick={handleSubmitRating}>Submit Rating</button>
+          </div>
           <p className="game-info">Designer: {game.designer}</p>
           <p className="game-info">Description: {game.description}</p>
           <p className="game-info">Year Released: {game.year_released}</p>
