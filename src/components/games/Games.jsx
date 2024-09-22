@@ -8,9 +8,10 @@ export const Games = () => {
   const [games, setGames] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [sortOption, setSortOption] = useState("");
 
   const getGames = async () => {
-    const gamesArray = await fetchAllGames(searchQuery);
+    const gamesArray = await fetchAllGames(searchQuery, sortOption);
     if (gamesArray) {
       setGames(gamesArray);
     }
@@ -18,15 +19,19 @@ export const Games = () => {
 
   useEffect(() => {
     getGames();
-  }, []); 
+  }, [sortOption]);
 
   const handleSearchChange = (event) => {
     setSearchQuery(event.target.value);
   };
 
+  const handleSortChange = (event) => {
+    setSortOption(event.target.value);
+  };
+
   const handleSearchSubmit = (event) => {
     event.preventDefault();
-    getGames(); 
+    getGames();
   };
 
   const displayGames = () => {
@@ -65,6 +70,12 @@ export const Games = () => {
         />
         <button type="submit">Search</button>
       </form>
+      <select value={sortOption} onChange={handleSortChange}>
+        <option value="">Sort by...</option>
+        <option value="year">Year released</option>
+        <option value="time">Estimated time to play</option>
+        <option value="designer">Designer</option>
+      </select>
       <div className="games-list">{displayGames()}</div>
     </>
   );

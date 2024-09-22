@@ -1,6 +1,13 @@
-export const fetchAllGames = async (searchQuery = "") => {
+export const fetchAllGames = async (searchQuery = "", sortOption = "") => {
   try {
-    const response = await fetch(`http://localhost:8000/games?q=${searchQuery}`, {
+    let url = `http://localhost:8000/games?`;
+    if (searchQuery) {
+      url += `q=${encodeURIComponent(searchQuery)}&`;
+    }
+    if (sortOption) {
+      url += `orderby=${encodeURIComponent(sortOption)}`;
+    }
+    const response = await fetch(url, {
       headers: {
         Authorization: `Token ${JSON.parse(
           localStorage.getItem("gamer_token")
