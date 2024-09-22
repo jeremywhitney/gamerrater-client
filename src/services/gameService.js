@@ -1,6 +1,6 @@
-export const fetchAllGames = async () => {
+export const fetchAllGames = async (searchQuery = "") => {
   try {
-    const response = await fetch("http://localhost:8000/games", {
+    const response = await fetch(`http://localhost:8000/games?q=${searchQuery}`, {
       headers: {
         Authorization: `Token ${JSON.parse(
           localStorage.getItem("gamer_token")

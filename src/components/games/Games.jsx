@@ -2,22 +2,32 @@ import { useEffect, useState } from "react";
 import { fetchAllGames } from "../../services/gameService";
 import { NavLink } from "react-router-dom";
 import { CreateGameModal } from "./CreateGameModal";
-import "./Games.css"
+import "./Games.css";
 
 export const Games = () => {
   const [games, setGames] = useState([]);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const getGames = async () => {
+    const gamesArray = await fetchAllGames(searchQuery);
+    if (gamesArray) {
+      setGames(gamesArray);
+    }
+  };
 
   useEffect(() => {
-    const getGames = async () => {
-      const gamesArray = await fetchAllGames();
-      if (gamesArray) {
-        setGames(gamesArray);
-      }
-    };
-
     getGames();
-  }, []);
+  }, []); 
+
+  const handleSearchChange = (event) => {
+    setSearchQuery(event.target.value);
+  };
+
+  const handleSearchSubmit = (event) => {
+    event.preventDefault();
+    getGames(); 
+  };
 
   const displayGames = () => {
     if (games.length) {
@@ -33,9 +43,7 @@ export const Games = () => {
   };
 
   const handleCreateGame = async () => {
-    // Refresh the list of games after a new game is created
-    const gamesArray = await fetchAllGames();
-    setGames(gamesArray);
+    await getGames();
   };
 
   return (
@@ -48,6 +56,15 @@ export const Games = () => {
           onGameCreated={handleCreateGame}
         />
       )}
+      <form onSubmit={handleSearchSubmit}>
+        <input
+          type="text"
+          value={searchQuery}
+          onChange={handleSearchChange}
+          placeholder="Search games..."
+        />
+        <button type="submit">Search</button>
+      </form>
       <div className="games-list">{displayGames()}</div>
     </>
   );
